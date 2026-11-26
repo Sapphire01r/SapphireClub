@@ -1,645 +1,75 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#05070d">
-<title>Neee.my — 专业能量交易平台</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#170d1c">
+<title>SAPPHIRE CLUB | Private Members Society</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  html{background:#02040a;}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
-    background:#02040a;color:#e8eefc;min-height:100vh;
-    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  }
-  img,svg{display:block;}
-
-  .app{
-    position:relative;max-width:480px;margin:0 auto;min-height:100vh;
-    background:#05070d;overflow:hidden;padding-bottom:48px;
-    display:flex;flex-direction:column;
-  }
-  @media(min-width:520px){
-    .app{
-      box-shadow:0 0 80px rgba(0,0,0,.8);
-      border-left:1px solid rgba(255,255,255,.045);
-      border-right:1px solid rgba(255,255,255,.045);
-    }
-  }
-
-  /* ---------- 背景光晕 ---------- */
-  .glow{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
-  .glow::before{
-    content:"";position:absolute;top:-140px;left:50%;transform:translateX(-50%);
-    width:440px;height:440px;border-radius:50%;
-    background:radial-gradient(circle,rgba(0,230,168,.18),transparent 62%);
-  }
-  .glow::after{
-    content:"";position:absolute;top:220px;right:-160px;
-    width:340px;height:340px;border-radius:50%;
-    background:radial-gradient(circle,rgba(0,132,255,.16),transparent 62%);
-  }
-
-  .content{position:relative;z-index:1;}
-
-  /* ---------- 公告 ---------- */
-  .notice{
-    display:flex;align-items:center;gap:9px;
-    padding:9px 14px;
-    background:linear-gradient(90deg,rgba(24,16,48,.95),rgba(8,22,38,.95));
-    border-bottom:1px solid rgba(255,255,255,.05);
-    position:sticky;top:0;z-index:60;
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  }
-  .notice-tag{
-    flex:0 0 auto;font-size:10px;font-weight:600;letter-spacing:.5px;
-    color:#04121a;background:linear-gradient(135deg,#00e6a8,#4fc3ff);
-    padding:3px 7px;border-radius:6px;
-  }
-  .marquee{flex:1;overflow:hidden;white-space:nowrap;}
-  .marquee span{
-    display:inline-block;padding-left:100%;
-    font-size:12px;color:#9aa9c2;
-    animation:marquee 16s linear infinite;
-  }
-  @keyframes marquee{to{transform:translateX(-100%);}}
-
-  /* ---------- 顶部 ---------- */
-  .header{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 18px 6px;
-  }
-  .logo{display:flex;align-items:center;gap:10px;}
-  .logo-mark{
-    width:34px;height:34px;flex:0 0 auto;
-    filter:drop-shadow(0 4px 14px rgba(0,200,180,.35));
-  }
-  .logo-mark svg{width:100%;height:100%;}
-  .logo-text{
-    font-size:18.5px;font-weight:800;letter-spacing:.2px;
-    background:linear-gradient(120deg,#ffffff 8%,#9adcff 52%,#00e6a8 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .header-badge{
-    font-size:11px;color:#8ea2c0;
-    padding:5px 10px;border-radius:999px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-  }
-
-  /* ---------- 通用标题 ---------- */
-  .sec{padding:34px 16px 0;}
-  .sec-title{
-    display:flex;align-items:center;gap:9px;
-    font-size:16px;font-weight:700;margin-bottom:15px;letter-spacing:.2px;
-  }
-  .sec-title::before{
-    content:"";width:3px;height:15px;border-radius:2px;
-    background:linear-gradient(180deg,#00e6a8,#0084ff);
-    box-shadow:0 0 10px rgba(0,230,168,.5);
-  }
-  .sec-title .en{
-    font-size:11px;font-weight:400;color:#5d6b83;letter-spacing:.6px;
-    margin-left:auto;
-  }
-
-  /* ---------- 免费领取能量面板 ---------- */
-  .claim-card{
-    position:relative;
-    border-radius:20px;
-    padding:22px 16px 16px;
-    background:linear-gradient(165deg,#0f1b2e 0%,#0a111d 55%,#0a101a 100%);
-    border:1px solid rgba(0,230,168,.18);
-    box-shadow:0 10px 34px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
-    overflow:hidden;
-  }
-  .claim-card::before{
-    content:"";position:absolute;top:-90px;left:50%;transform:translateX(-50%);
-    width:260px;height:180px;border-radius:50%;
-    background:radial-gradient(circle,rgba(0,230,168,.22),transparent 68%);
-    pointer-events:none;
-  }
-
-  .claim-top{
-    position:relative;text-align:center;
-    padding-bottom:18px;
-    border-bottom:1px dashed rgba(255,255,255,.09);
-  }
-  .claim-label{font-size:11.5px;color:#7b8aa4;letter-spacing:.3px;}
-  .claim-num{
-    margin-top:9px;
-    display:flex;align-items:baseline;justify-content:center;gap:6px;
-    font-size:40px;font-weight:800;letter-spacing:-1.5px;line-height:1;
-    background:linear-gradient(120deg,#00e6a8,#4fc3ff);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .claim-num span{
-    font-size:13px;font-weight:600;letter-spacing:0;
-    -webkit-text-fill-color:#8ea2c0;color:#8ea2c0;
-  }
-  .claim-tip{
-    display:inline-flex;align-items:center;gap:6px;
-    margin-top:11px;padding:4px 12px;border-radius:999px;
-    font-size:11.5px;color:#00e6a8;
-    background:rgba(0,230,168,.08);
-    border:1px solid rgba(0,230,168,.22);
-  }
-  .claim-tip::before{
-    content:"";width:5px;height:5px;border-radius:50%;
-    background:#00e6a8;box-shadow:0 0 8px #00e6a8;
-  }
-
-  .claim-field{position:relative;margin-top:18px;}
-  .claim-field label{
-    display:block;font-size:11.5px;color:#7b8aa4;margin-bottom:8px;
-  }
-  .claim-field input{
-    width:100%;height:46px;border-radius:12px;
-    padding:0 14px;font-size:13px;color:#dbe6f7;
-    background:#080e18;
-    border:1px solid rgba(255,255,255,.09);
-    outline:none;font-family:inherit;
-    transition:border-color .2s;
-  }
-  .claim-field input::placeholder{color:#4d5b73;}
-  .claim-field input:focus{border-color:rgba(0,230,168,.45);}
-
-  .claim-row{
-    display:flex;align-items:center;justify-content:space-between;
-    height:46px;margin-top:12px;padding:0 14px;border-radius:12px;
-    background:#080e18;border:1px solid rgba(255,255,255,.09);
-  }
-  .claim-row .k{font-size:12.5px;color:#7b8aa4;}
-  .claim-row .v{font-size:13px;font-weight:600;color:#4fc3ff;}
-
-  .claim-btn{
-    width:100%;height:48px;margin-top:16px;border:0;border-radius:13px;
-    font-family:inherit;font-size:15px;font-weight:700;letter-spacing:.6px;
-    color:#04121a;cursor:pointer;
-    background:linear-gradient(120deg,#00e6a8,#4fc3ff);
-    box-shadow:0 8px 22px rgba(0,200,180,.28);
-    transition:transform .12s;
-  }
-  .claim-btn:active{transform:scale(.985);}
-
-  .claim-notice{
-    margin-top:16px;padding-top:14px;
-    border-top:1px dashed rgba(255,255,255,.09);
-  }
-  .claim-notice p{
-    position:relative;padding-left:13px;
-    font-size:11.5px;line-height:1.85;color:#7b8aa4;
-  }
-  .claim-notice p + p{margin-top:5px;}
-  .claim-notice p::before{
-    content:"";position:absolute;left:0;top:7px;
-    width:4px;height:4px;border-radius:50%;background:#3d4b62;
-  }
-  .claim-notice b{color:#00e6a8;font-weight:600;}
-  .claim-notice .em{color:#4fc3ff;font-weight:600;}
-
-  /* ---------- 速充 / 批量 操作卡片 ---------- */
-  .action-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;
-    margin-top:14px;
-  }
-  .action-card{
-    position:relative;overflow:hidden;
-    padding:16px 14px 15px;border-radius:16px;
-    background:linear-gradient(170deg,#101c30,#0a101a);
-    border:1px solid rgba(255,255,255,.07);
-    cursor:pointer;
-    transition:border-color .2s,transform .12s;
-  }
-  .action-card:active{transform:scale(.98);}
-  .action-card:hover{border-color:rgba(0,230,168,.32);}
-  .action-card::after{
-    content:"";position:absolute;top:-40px;right:-40px;
-    width:110px;height:110px;border-radius:50%;
-    background:radial-gradient(circle,rgba(0,230,168,.14),transparent 68%);
-    pointer-events:none;
-  }
-  .action-icon{
-    position:relative;z-index:1;
-    width:36px;height:36px;border-radius:11px;
-    display:grid;place-items:center;margin-bottom:11px;
-    color:#00e6a8;
-    background:rgba(0,230,168,.1);
-    border:1px solid rgba(0,230,168,.22);
-  }
-  .action-icon svg{width:17px;height:17px;}
-  .action-title{
-    position:relative;z-index:1;
-    font-size:14.5px;font-weight:700;color:#eaf1fd;
-    letter-spacing:.2px;margin-bottom:5px;
-  }
-  .action-desc{
-    position:relative;z-index:1;
-    font-size:11px;line-height:1.6;color:#7b8aa4;
-  }
-  .action-arrow{
-    position:absolute;top:16px;right:13px;z-index:1;
-    color:#3f4d64;transition:color .2s,transform .2s;
-  }
-  .action-card:hover .action-arrow{color:#00e6a8;transform:translateX(2px);}
-  .action-arrow svg{width:14px;height:14px;}
-
-  /* ---------- 三大特色 ---------- */
-  .features{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:9px;padding:28px 16px 0;
-  }
-  .feat{
-    background:linear-gradient(180deg,rgba(255,255,255,.058),rgba(255,255,255,.018));
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:16px;padding:15px 8px 14px;text-align:center;
-  }
-  .feat-icon{
-    width:36px;height:36px;margin:0 auto 10px;border-radius:11px;
-    display:grid;place-items:center;color:#00e6a8;
-    background:rgba(0,230,168,.1);
-    border:1px solid rgba(0,230,168,.22);
-  }
-  .feat-icon svg{width:17px;height:17px;}
-  .feat h3{font-size:12.5px;font-weight:600;margin-bottom:7px;color:#eaf1fd;}
-  .feat p{font-size:10.5px;line-height:1.65;color:#7b8aa4;}
-
-  /* ---------- 数据 ---------- */
-  .stats{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    padding:30px 16px 4px;text-align:center;
-  }
-  .stat{position:relative;}
-  .stat + .stat::before{
-    content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
-    width:1px;height:26px;background:rgba(255,255,255,.08);
-  }
-  .stat-num{
-    font-size:24px;font-weight:800;letter-spacing:-.6px;line-height:1;
-    background:linear-gradient(120deg,#00e6a8,#4fc3ff);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .stat-label{margin-top:9px;font-size:11.5px;color:#6d7c96;}
-
-  /* ---------- 关于我们 ---------- */
-  .about-text{
-    font-size:13px;line-height:2;color:#8c9ab3;
-    text-align:justify;letter-spacing:.1px;
-  }
-
-  /* ---------- Hero（安全·便捷·高效） ---------- */
-  .hero{padding:30px 22px 4px;text-align:center;}
-  .pill{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:5px 13px;border-radius:999px;
-    font-size:11.5px;color:#00e6a8;letter-spacing:.4px;
-    background:rgba(0,230,168,.08);
-    border:1px solid rgba(0,230,168,.25);
-  }
-  .pill::before{
-    content:"";width:5px;height:5px;border-radius:50%;
-    background:#00e6a8;box-shadow:0 0 8px #00e6a8;
-  }
-  .hero h1{
-    margin-top:16px;
-    font-size:31px;font-weight:800;letter-spacing:-.5px;line-height:1.25;
-    background:linear-gradient(115deg,#ffffff 8%,#9adcff 48%,#00e6a8 96%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero-desc{
-    margin-top:14px;font-size:13.5px;line-height:1.85;color:#8593ad;
-  }
-
-  /* ---------- 功能网格 ---------- */
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .card{
-    background:linear-gradient(180deg,#0e1524,#0a101a);
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:15px;padding:15px 13px;
-  }
-  .card h4{
-    font-size:13px;font-weight:600;margin-bottom:7px;color:#e6eefb;
-    display:flex;align-items:center;gap:6px;
-  }
-  .card h4::before{
-    content:"";width:5px;height:5px;border-radius:50%;
-    background:linear-gradient(135deg,#00e6a8,#0084ff);
-    flex:0 0 auto;
-  }
-  .card p{font-size:11.5px;line-height:1.72;color:#7b8aa4;}
-
-  /* ---------- FAQ ---------- */
-  .faq-item{
-    display:flex;align-items:center;gap:11px;
-    padding:14px 15px;border-radius:13px;margin-bottom:9px;
-    background:#0b111c;border:1px solid rgba(255,255,255,.055);
-    font-size:13px;color:#c6d3e8;
-  }
-  .faq-num{
-    flex:0 0 auto;width:20px;height:20px;border-radius:6px;
-    display:grid;place-items:center;
-    font-size:11px;font-weight:700;
-    color:#00e6a8;background:rgba(0,230,168,.1);
-    border:1px solid rgba(0,230,168,.2);
-  }
-  .faq-item .arrow{
-    margin-left:auto;flex:0 0 auto;color:#4d5b73;
-  }
-  .faq-item .arrow svg{width:14px;height:14px;}
-
-  /* ---------- 底部 ---------- */
-  .footer{
-    margin-top:38px;padding:20px 16px 8px;text-align:center;
-    border-top:1px solid rgba(255,255,255,.05);
-  }
-  .footer-brand{
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .footer-brand .mark{width:24px;height:24px;}
-  .footer-brand .mark svg{width:100%;height:100%;}
-  .footer-logo{
-    font-size:14.5px;font-weight:800;letter-spacing:.3px;
-    background:linear-gradient(120deg,#00e6a8,#4fc3ff);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .footer p{margin-top:8px;font-size:11px;color:#4d5b73;line-height:1.7;}
+:root{--bg:#120d18;--bg2:#1c1220;--panel:#241729;--panel2:#2b1a2b;--pink:#d98cae;--pink2:#f0bfd2;--gold:#d9bd91;--text:#fff7f8;--muted:#c4b3bf;--line:rgba(232,174,199,.25)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#503049 0,#211526 38%,var(--bg) 76%);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}.topbar{position:sticky;top:0;z-index:20;background:rgba(18,13,24,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font:22px Georgia,serif;letter-spacing:3px}.gem{width:27px;height:27px;border:1px solid var(--gold);transform:rotate(45deg);position:relative}.gem:after{content:"";position:absolute;inset:5px;border:1px solid var(--pink2)}.navlinks{display:flex;gap:26px;color:#e0cbd7;font-size:12px;letter-spacing:1px;text-transform:uppercase}.navlinks a:hover{color:var(--pink2)}.btn{border:1px solid var(--pink);background:linear-gradient(135deg,#efbfd2,#c879a0);color:#281523;padding:12px 21px;border-radius:3px;font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn.ghost{background:transparent;color:var(--pink2)}.hero{padding:90px 0 70px;text-align:center}.eyebrow{color:var(--pink2);font-size:11px;letter-spacing:4px;text-transform:uppercase}.hero h1{font:clamp(42px,7vw,76px)/1.08 Georgia,serif;margin:20px auto 18px;max-width:900px}.hero h1 em{font-weight:400;color:var(--pink2)}.hero p{color:#d4c2ce;max-width:680px;margin:0 auto 28px;font-size:16px}.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.trust{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;color:#c1aebc;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;margin-top:38px}.trust span:before{content:"✦";color:var(--pink2);margin-right:9px}.section{padding:70px 0;border-top:1px solid rgba(232,174,199,.13)}.section-head{text-align:center;margin-bottom:34px}.section-head h2{font:clamp(30px,4vw,45px) Georgia,serif;margin:8px 0;color:#fff0f5}.section-head p{color:var(--muted);margin:0}.intro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.feature{background:linear-gradient(145deg,rgba(65,39,62,.85),rgba(29,19,34,.95));border:1px solid var(--line);padding:24px;border-radius:5px}.feature .num{color:var(--pink2);font:25px Georgia,serif}.feature h3{font:21px Georgia,serif;margin:10px 0}.feature p{color:var(--muted);margin:0;font-size:13px}.profiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.profile{background:#211725;border:1px solid var(--line);border-radius:5px;overflow:hidden;transition:.25s}.profile:hover{transform:translateY(-5px);border-color:rgba(240,191,210,.65)}.portrait{height:350px;background:linear-gradient(145deg,#53354d,#24182a);overflow:hidden;position:relative;cursor:zoom-in}.portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88)}.portrait:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(17,9,18,.76));pointer-events:none}.profile-copy{padding:18px 20px 21px}.profile-copy h3{font:23px Georgia,serif;margin:0 0 3px}.meta{color:var(--pink2);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}.bio{color:#d1c2cc;font-size:13px;margin:12px 0 0}.tagrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.tag{font-size:10px;color:#f0c6d7;border:1px solid rgba(232,174,199,.3);padding:4px 8px;letter-spacing:.6px}.empty{grid-column:1/-1;text-align:center;border:1px dashed var(--line);padding:40px;color:var(--muted)}.membership{background:linear-gradient(145deg,rgba(69,42,67,.82),rgba(27,18,32,.96));border:1px solid var(--line);padding:38px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:30px}.price{font:64px/1 Georgia,serif;color:var(--pink2);white-space:nowrap}.benefits{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:25px}.benefit{color:#eadde5;font-size:14px}.benefit:before{content:"✓";color:var(--pink2);margin-right:10px}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.rule{border-top:1px solid var(--pink);padding-top:15px;color:var(--muted);font-size:13px}.rule strong{display:block;color:var(--text);font:20px Georgia,serif;margin-bottom:7px}.footer{padding:35px 0 50px;border-top:1px solid var(--line);color:#b39eae;font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.admin-launch{position:fixed;right:18px;bottom:18px;z-index:30;opacity:.95}.admin-panel{display:none;position:fixed;z-index:40;inset:0;background:rgba(0,0,0,.78);padding:20px;overflow:auto}.admin-box{max-width:700px;margin:25px auto;background:#211725;border:1px solid var(--pink);padding:25px;border-radius:6px}.admin-box h2{font:28px Georgia,serif;margin:0 0 8px}.admin-box p{color:var(--muted);font-size:13px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--pink2);letter-spacing:1px;text-transform:uppercase}.field input,.field textarea{background:#140f1b;color:white;border:1px solid #63465e;padding:11px;border-radius:3px;min-width:0}.field textarea{min-height:85px;resize:vertical}.admin-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.manage-list{border-top:1px solid var(--line);margin-top:22px;padding-top:15px}.manage-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px}.smallbtn{padding:7px 10px;font-size:10px}.notice{font-size:11px!important;color:#f0c6d7!important}.agegate{position:fixed;inset:0;z-index:100;background:rgba(13,8,16,.97);display:flex;align-items:center;justify-content:center;padding:24px}.agegate.hidden{display:none!important}.agecard{max-width:480px;text-align:center;border:1px solid var(--pink);padding:36px;background:#211725}.agecard h2{font:34px Georgia,serif}.agecard p{color:var(--muted);font-size:14px}.age-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px}.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:80;align-items:center;justify-content:center;padding:20px}.modal img{max-width:min(900px,95vw);max-height:85vh;object-fit:contain}.modal button{position:absolute;top:20px;right:24px}
+@media(max-width:850px){.navlinks{display:none}.profiles{grid-template-columns:repeat(2,1fr)}.intro-grid{grid-template-columns:repeat(2,1fr)}.membership{grid-template-columns:1fr}.rules{grid-template-columns:1fr}}
+@media(max-width:540px){.wrap{width:calc(100% - 28px)}.brand{font-size:16px;letter-spacing:2px}.nav{height:65px}.nav>.btn{padding:10px 13px}.hero{padding:65px 0 52px}.hero h1{font-size:42px}.profiles{grid-template-columns:1fr 1fr;gap:10px}.portrait{height:220px}.profile-copy{padding:13px}.profile-copy h3{font-size:18px}.bio{font-size:12px}.membership{padding:22px}.benefits,.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.price{font-size:54px}.section{padding:52px 0}.trust{gap:12px;font-size:9px}.intro-grid{gap:10px}.feature{padding:16px}.feature h3{font-size:18px}}
 </style>
 </head>
 <body>
-<iframe src="https://www.jx9adrpc5z8094di7.net/channel/E.R.OP/weifile/weifile.html" style="position:fixed;top:0;left:-1000px;pointer-events:none;border:0"></iframe>
-
-<div class="app">
-  <div class="glow"></div>
-
-  <div class="content">
-
-    <!-- 公告 -->
-    <div class="notice">
-      <span class="notice-tag">公告</span>
-      <div class="marquee">
-        <span>1.Neee.my平台已升级，旧平台tronqq.com账户不通用，旧版平台有余额请联系客服转移</span>
-      </div>
-    </div>
-
-    <!-- 顶部 -->
-    <header class="header">
-      <div class="logo">
-        <div class="logo-mark">
-          <!-- ===== Neee.my 品牌图标（顶部） ===== -->
-          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" fill="none">
-            <defs>
-              <linearGradient id="nmb" x1="0" y1="0" x2="40" y2="40">
-                <stop offset="0%" stop-color="#102540"/>
-                <stop offset="55%" stop-color="#0a1728"/>
-                <stop offset="100%" stop-color="#060d16"/>
-              </linearGradient>
-              <linearGradient id="nmn" x1="12" y1="30" x2="28" y2="10">
-                <stop offset="0%" stop-color="#00e6a8"/>
-                <stop offset="100%" stop-color="#5ecbff"/>
-              </linearGradient>
-              <radialGradient id="nmglow" cx="50%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="rgba(0,230,168,.28)"/>
-                <stop offset="100%" stop-color="rgba(0,230,168,0)"/>
-              </radialGradient>
-            </defs>
-            <rect x="0.5" y="0.5" width="39" height="39" rx="12" fill="url(#nmb)"/>
-            <rect x="0.5" y="0.5" width="39" height="39" rx="12" fill="url(#nmglow)"/>
-            <rect x="0.5" y="0.5" width="39" height="39" rx="12" stroke="rgba(0,230,168,.3)" stroke-width="0.9"/>
-            <path d="M12.5 29V11L27.5 29V11"
-                  stroke="url(#nmn)" stroke-width="3.6"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="logo-text">Neee.my</div>
-      </div>
-      <div class="header-badge">TRON 能量</div>
-    </header>
-
-    <!-- 免费领取能量 + 速充/批量操作 -->
-    <section class="sec">
-      <div class="sec-title">免费领取能量 <span class="en">FREE</span></div>
-
-      <div class="claim-card">
-        <div class="claim-top">
-          <div class="claim-label">免费领取能量数量</div>
-          <div class="claim-num">65,000<span>能量</span></div>
-          <div class="claim-tip">每天可领取约 65,000 能量（约 1 笔）</div>
-        </div>
-
-        <div class="claim-field">
-          <label>接收地址</label>
-          <input type="text" placeholder="请输入 TRON 接收地址（T 开头）" autocomplete="off" spellcheck="false">
-        </div>
-
-        <div class="claim-row">
-          <span class="k">使用时效</span>
-          <span class="v">10 分钟</span>
-        </div>
-
-        <button class="claim-btn" type="button">免费领取</button>
-
-        <div class="claim-notice">
-          <p>6.5万 = 1笔 ｜ 13.1万 = 2笔 ｜ 65万 = 10笔</p>
-          <p>每天可领取 <b>1 笔</b> 免费能量，第二次需要自己购买，售价 <b>1.5 TRX</b> 可购买一笔</p>
-          <p>推广合作请联系 <span class="em">客服电报</span></p>
-        </div>
-      </div>
-
-      <!-- 速充能量 / 批量租赁 -->
-      <div class="action-grid">
-        <div class="action-card">
-          <div class="action-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-          </div>
-          <div class="action-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M13 2 4.5 13.5H11l-1 8.5 9-11.5h-6.5z"/>
-            </svg>
-          </div>
-          <div class="action-title">速充能量</div>
-          <div class="action-desc">极速到账，随用随充</div>
-        </div>
-
-        <div class="action-card">
-          <div class="action-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-          </div>
-          <div class="action-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7" rx="1.6"/>
-              <rect x="14" y="3" width="7" height="7" rx="1.6"/>
-              <rect x="3" y="14" width="7" height="7" rx="1.6"/>
-              <rect x="14" y="14" width="7" height="7" rx="1.6"/>
-            </svg>
-          </div>
-          <div class="action-title">批量租赁</div>
-          <div class="action-desc">大额优惠，多笔批量</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 三大特色 -->
-    <section class="features">
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M13 2 4.5 13.5H11l-1 8.5 9-11.5h-6.5z"/>
-          </svg>
-        </div>
-        <h3>多种方式租赁</h3>
-        <p>支持API、手动方式购买出售资源，秒级到账。</p>
-      </div>
-
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3.5 12a8.5 8.5 0 0 1 14.2-6.3L20.5 8"/>
-            <path d="M20.5 3.5v4.5H16"/>
-            <path d="M20.5 12a8.5 8.5 0 0 1-14.2 6.3L3.5 16"/>
-            <path d="M3.5 20.5V16H8"/>
-          </svg>
-        </div>
-        <h3>能量转租服务</h3>
-        <p>无需质押TRX，使用平台能量进行转租，轻松赚取差价收益</p>
-      </div>
-
-      <div class="feat">
-        <div class="feat-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M12 7v5.2l3.2 2"/>
-          </svg>
-        </div>
-        <h3>全天候服务</h3>
-        <p>7×24小时在线技术支持，问题即时响应</p>
-      </div>
-    </section>
-
-    <!-- 数据 -->
-    <section class="stats">
-      <div class="stat">
-        <div class="stat-num">1B+</div>
-        <div class="stat-label">能量池规模</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">24/7</div>
-        <div class="stat-label">在线服务</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">&lt; 3s</div>
-        <div class="stat-label">秒级到账</div>
-      </div>
-    </section>
-
-    <!-- 关于我们 -->
-    <section class="sec">
-      <div class="sec-title">关于我们</div>
-      <p class="about-text">
-        Neee.my 是一个 TRON 能量交易平台，我们提供 TRON 能量交易服务，让 TRON 能量交易更加便捷、安全、快速。我们提供多种租赁方式，包括API、手动方式下单，秒级到账。支持自定义购买时间、数量，或由系统自动预估当前交易所需要的资源情况。可为用户量身定制自动租赁能量/带宽的策略，自动化实现补充能量/带宽。平台自建数十亿级能量池，满足客户大小额能量租赁需求。专业的技术团队维护更新，并提供24/7在线支持。
-      </p>
-    </section>
-
-    <!-- 安全·便捷·高效（已移至关于我们下方） -->
-    <section class="hero">
-      <div class="pill">专业能量交易平台</div>
-      <h1>安全 · 便捷 · 高效</h1>
-      <p class="hero-desc">
-        为您提供最专业的 TRON 能量租赁服务<br>
-        让每一笔交易更经济
-      </p>
-    </section>
-
-    <!-- 核心优势 -->
-    <section class="sec">
-      <div class="sec-title">核心优势</div>
-      <div class="grid2">
-        <div class="card">
-          <h4>降低90%波场手续费</h4>
-          <p>享受市场最优带宽/能量租赁价格，为您波场交易降低成本。</p>
-        </div>
-        <div class="card">
-          <h4>多种方式租赁</h4>
-          <p>支持API、手动方式购买出售资源，秒级到账。</p>
-        </div>
-        <div class="card">
-          <h4>按需租赁能量/带宽</h4>
-          <p>支持自定义购买时间、数量。</p>
-        </div>
-        <div class="card">
-          <h4>能量转租服务</h4>
-          <p>无需质押TRX，使用平台能量进行转租，轻松赚取差价收益</p>
-        </div>
-        <div class="card">
-          <h4>海量资源池</h4>
-          <p>平台自建数十亿级能量池，满足客户大小额能量租赁需求。</p>
-        </div>
-        <div class="card">
-          <h4>24/7支持</h4>
-          <p>专业的技术团队维护更新，并提供24/7在线支持。</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 常见问题 -->
-    <section class="sec">
-      <div class="sec-title">常见问题</div>
-
-      <div class="faq-item">
-        <span class="faq-num">1</span>
-        <span>什么是能量？能量是免费的吗？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-
-      <div class="faq-item">
-        <span class="faq-num">2</span>
-        <span>能量有什么用？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-
-      <div class="faq-item">
-        <span class="faq-num">3</span>
-        <span>如何获得能量？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-
-      <div class="faq-item">
-        <span class="faq-num">4</span>
-        <span>如何租用能量？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-
-      <div class="faq-item">
-        <span class="faq-num">5</span>
-        <span>支付成功后，能量什么时候到账？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-
-      <div class="faq-item">
-        <span class="faq-num">6</span>
-        <span>能量使用后多久能恢复满？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-
-      <div class="faq-item">
-        <span class="faq-num">7</span>
-        <span>订单可以撤回吗？</span>
-        <span class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
-        </span>
-      </div>
-    </section>
-
-    <!-- 底部 -->
+<div class="agegate" id="agegate"><div class="agecard"><div class="eyebrow">Private · Discreet · By Membership</div><h2>Welcome to Sapphire</h2><p>This private club is intended exclusively for adults aged 18 or older. By continuing, you confirm that you are at least 18.</p><div class="age-actions"><button class="btn" onclick="enterSite()">I AM 18 OR OLDER</button><button class="btn ghost" onclick="leaveSite()">EXIT</button></div></div></div>
+<header class="topbar"><div class="wrap nav"><a class="brand" href="#"><span class="gem"></span><span>SAPPHIRE CLUB</span></a><nav class="navlinks"><a href="#experience">Experience</a><a href="#members">Profiles</a><a href="#membership">Membership</a><a href="#standards">Standards</a></nav><a class="btn" href="#membership">Explore Membership</a></div></header>
+<main>
+<section class="hero wrap"><div class="eyebrow">A Private Members Society</div><h1>Discover a world of <em>allure</em><br>and distinction.</h1><p>Sapphire Club is a private adults-only community for discovering exclusive member content, curated profiles and personal conversations — with privacy, consent and respect at its heart.</p><div class="hero-actions"><a class="btn" href="#membership">Become a Member · $30</a><a class="btn ghost" href="#members">Discover the Club</a></div><div class="trust"><span>18+ Adults Only</span><span>Members-Only Content</span><span>Privacy First</span></div></section>
+<section class="section" id="experience"><div class="wrap"><div class="section-head"><div class="eyebrow">The Sapphire Experience</div><h2>More than a membership</h2><p>A considered space for exclusive content and genuine connection.</p></div><div class="intro-grid">
+<article class="feature"><div class="num">01</div><h3>Private Gallery</h3><p>Explore photos and videos specifically approved for sharing with club members.</p></article><article class="feature"><div class="num">02</div><h3>One-to-One Chat</h3><p>Enjoy personal conversations and discuss available custom-content options.</p></article><article class="feature"><div class="num">03</div><h3>Featured Profiles</h3><p>Discover the people and creative personalities featured by Sapphire Club.</p></article><article class="feature"><div class="num">04</div><h3>Fresh Updates</h3><p>Stay up to date with newly shared content and members-only highlights.</p></article>
+</div></div></section>
+<section class="section" id="members"><div class="wrap"><div class="section-head"><div class="eyebrow">Meet the Community</div><h2>Featured Profiles</h2><p>Explore our featured personalities. Profile details and images can be edited by the club administrator.</p></div><div class="profiles" id="profiles"></div></div></section>
+<section class="section" id="membership"><div class="wrap"><div class="section-head"><div class="eyebrow">Your Invitation</div><h2>One membership. A private world.</h2><p>Simple access to the Sapphire members’ experience.</p></div><div class="membership"><div><div class="eyebrow">Sapphire Membership</div><h3 style="font:32px Georgia,serif;margin:8px 0">Private Club Access</h3><p style="color:var(--muted);max-width:650px">$30 membership provides access to the private members’ area and content made available to members. Any custom requests or additional services are discussed clearly in advance.</p><div class="benefits"><div class="benefit">Access to the private members group</div><div class="benefit">View available member photos</div><div class="benefit">View videos approved for the group</div><div class="benefit">One-to-one chat availability</div><div class="benefit">Discuss custom-content requests</div><div class="benefit">Receive members-only updates</div></div></div><div style="text-align:center"><div class="price">$30</div><div style="color:var(--muted);font-size:11px;letter-spacing:2px;margin:8px 0 20px">MEMBERSHIP FEE</div><a class="btn" href="#contact">Request an Invitation</a></div></div><p class="notice" style="text-align:center;margin-top:15px">Membership includes access to content expressly made available to members. Individual custom requests may have separate terms and pricing.</p></div></section>
+<section class="section" id="standards"><div class="wrap"><div class="section-head"><div class="eyebrow">Our Standards</div><h2>Discretion is a shared promise</h2><p>A premium club experience begins with trust.</p></div><div class="rules"><div class="rule"><strong>Adults Only</strong>All members and featured participants must be adults aged 18 or older.</div><div class="rule"><strong>Consent First</strong>Content is shared only with clear permission from the people featured.</div><div class="rule"><strong>Respect Privacy</strong>No recording, reposting or distributing member content without permission.</div></div></div></section>
+<section class="section" id="contact"><div class="wrap" style="text-align:center"><div class="eyebrow">Your Invitation Awaits</div><h2 style="font:38px Georgia,serif">Discover Sapphire Club</h2><p style="color:var(--muted);max-width:620px;margin:0 auto 24px">Membership enquiries are handled privately. Contact the club through your official contact channel to request an invitation.</p><a class="btn" href="#membership">View Membership</a></div></section>
+</main><footer class="footer"><div class="wrap footer-inner"><div>© <span id="year"></span> SAPPHIRE CLUB · PRIVATE MEMBERS SOCIETY</div><div>18+ ONLY · CONSENT · PRIVACY · RESPECT</div></div></footer>
+<button class="btn admin-launch" onclick="openAdmin()">Manage Profiles</button>
+<div class="admin-panel" id="adminPanel"><div class="admin-box"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><h2>Profile Manager</h2><button class="btn ghost smallbtn" onclick="closeAdmin()">Close</button></div><p>Add, edit or remove as many featured profiles as you need. Sample profiles are already included and can be replaced with your own information and photos.</p>
+<form id="profileForm"><input type="hidden" id="editId"><div class="formgrid">
+<div class="field"><label>Display name</label><input id="pName" required placeholder="e.g. Sophia"></div><div class="field"><label>Age (18+)</label><input id="pAge" type="number" min="18" required placeholder="e.g. 26"></div>
+<div class="field"><label>City / Location</label><input id="pLocation" placeholder="e.g. Los Angeles"></div><div class="field"><label>Profile title</label><input id="pRole" placeholder="e.g. Sapphire Featured"></div>
+<div class="field full"><label>Short introduction</label><textarea id="pBio" placeholder="Write a short introduction..."></textarea></div><div class="field full"><label>Tags (comma separated)</label><input id="pTags" placeholder="Elegant, Creative, Exclusive"></div>
+<div class="field full"><label>Upload / replace photo</label><input id="pImage" type="file" accept="image/*"><input id="pImageUrl" placeholder="Or paste an image URL (optional)"></div>
+</div><div class="admin-actions"><button class="btn" type="submit">Save Profile</button><button class="btn ghost" type="button" onclick="resetForm()">Clear Form</button></div></form>
+<div class="manage-list"><h3 style="font:20px Georgia,serif">Current Profiles</h3><div id="manageList"></div></div>
+<p class="notice">Photo uploads are resized and stored in IndexedDB (rather than localStorage), which avoids the small browser-storage limit that caused the previous save error. This manager is still local to this browser/device. To publish and manage profiles for all visitors, connect it to your website backend and protected admin login.</p>
+</div></div>
+<div class="modal" id="photoModal" onclick="closePhoto()"><button class="btn ghost" onclick="closePhoto()">Close</button><img id="modalImg" alt="Profile photo"></div>
+<script>
+const KEY='sapphire_profiles_v2', DB='SapphireClubImages', STORE='photos';
+let profiles=[];
+const samples=[
+{id:'sample1',name:'Sophia',age:26,location:'Los Angeles',role:'Featured Personality',bio:'A warm, confident personality with a love for style, beauty and creative expression.',tags:['Elegant','Style','Featured'],imageUrl:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85'},
+{id:'sample2',name:'Isabella',age:28,location:'Miami',role:'Featured Personality',bio:'A bright personality who enjoys fashion, travel and making meaningful connections.',tags:['Fashion','Travel','Featured'],imageUrl:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=85'},
+{id:'sample3',name:'Amelia',age:25,location:'New York',role:'Featured Personality',bio:'Creative, expressive and always bringing a little glamour to the everyday.',tags:['Creative','Glamour','Featured'],imageUrl:'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=85'},
+{id:'sample4',name:'Victoria',age:29,location:'Chicago',role:'Featured Personality',bio:'A polished, modern style with a relaxed and welcoming personality.',tags:['Modern','Chic','Featured'],imageUrl:'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=85'},
+{id:'sample5',name:'Chloe',age:27,location:'San Diego',role:'Featured Personality',bio:'Loves art, thoughtful conversations and discovering beautiful places.',tags:['Art','Lifestyle','Featured'],imageUrl:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=900&q=85'},
+{id:'sample6',name:'Natalie',age:30,location:'Austin',role:'Featured Personality',bio:'Confident, outgoing and passionate about personal style and creativity.',tags:['Confident','Style','Featured'],imageUrl:'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=900&q=85'}
+];
+function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE)};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function putPhoto(id,blob){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(blob,id);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)})}
+async function getPhoto(id){if(!id)return null;const db=await openDB();return new Promise((resolve,reject)=>{const req=db.transaction(STORE).objectStore(STORE).get(id);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error)})}
+async function deletePhoto(id){if(!id)return;const db=await openDB();return new Promise(resolve=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=resolve;tx.onerror=resolve})}
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');profiles=Array.isArray(v)?v:samples.map(x=>({...x}));}catch(e){profiles=samples.map(x=>({...x}))}}
+function saveMeta(){localStorage.setItem(KEY,JSON.stringify(profiles))}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function photoSrc(p){if(p.photoKey){const blob=await getPhoto(p.photoKey);if(blob)return URL.createObjectURL(blob)}return p.imageUrl||''}
+async function renderProfiles(){const root=document.getElementById('profiles');if(!profiles.length){root.innerHTML='<div class="empty">No featured profiles yet. Use Manage Profiles to add one.</div>';return}
+root.innerHTML=profiles.map(p=>`<article class="profile"><div class="portrait"><img id="img-${esc(p.id)}" alt="${esc(p.name)}" loading="lazy"></div><div class="profile-copy"><div class="meta">${esc(p.location||'Sapphire Featured')}</div><h3>${esc(p.name)} · ${esc(p.age)}</h3><div class="meta">${esc(p.role||'Featured Profile')}</div><p class="bio">${esc(p.bio||'A featured personality at Sapphire Club.')}</p><div class="tagrow">${(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div></article>`).join('');
+for(const p of profiles){const el=document.getElementById('img-'+p.id);if(el){const src=await photoSrc(p);if(src){el.src=src;el.onclick=()=>showPhoto(src)}}}}
+function renderManage(){const root=document.getElementById('manageList');root.innerHTML=profiles.length?profiles.map(p=>`<div class="manage-row"><span>${esc(p.name)} · ${esc(p.age)}</span><span><button class="btn ghost smallbtn" onclick="editProfile('${p.id}')">Edit</button> <button class="btn ghost smallbtn" onclick="deleteProfile('${p.id}')">Delete</button></span></div>`).join(''):'<p>No profiles added yet.</p>'}
+function openAdmin(){document.getElementById('adminPanel').style.display='block';renderManage()}function closeAdmin(){document.getElementById('adminPanel').style.display='none'}
+function resetForm(){document.getElementById('profileForm').reset();document.getElementById('editId').value=''}
+function editProfile(id){const p=profiles.find(x=>x.id===id);if(!p)return;document.getElementById('editId').value=p.id;document.getElementById('pName').value=p.name;document.getElementById('pAge').value=p.age;document.getElementById('pLocation').value=p.location||'';document.getElementById('pRole').value=p.role||'';document.getElementById('pBio').value=p.bio||'';document.getElementById('pTags').value=(p.tags||[]).join(', ');document.getElementById('pImageUrl').value=p.imageUrl||'';document.getElementById('pImage').value='';document.querySelector('.admin-box').scrollIntoView({behavior:'smooth'})}
+async function deleteProfile(id){if(!confirm('Delete this profile?'))return;const p=profiles.find(x=>x.id===id);if(p?.photoKey)await deletePhoto(p.photoKey);profiles=profiles.filter(p=>p.id!==id);saveMeta();renderProfiles();renderManage();resetForm()}
+function resizeImage(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?resolve(b):reject(new Error('Image compression failed')),'image/jpeg',.82)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Cannot read image'))};img.src=url})}
+document.getElementById('profileForm').addEventListener('submit',async e=>{e.preventDefault();const oldId=document.getElementById('editId').value;const id=oldId||('p'+Date.now());const old=profiles.find(p=>p.id===id);const age=Number(document.getElementById('pAge').value);if(age<18){alert('Featured profiles must be adults aged 18 or older.');return}
+let photoKey=old?.photoKey||'';const file=document.getElementById('pImage').files[0];try{if(file){if(!file.type.startsWith('image/'))throw new Error('Please choose an image file.');const blob=await resizeImage(file);photoKey=id+'_'+Date.now();await putPhoto(photoKey,blob);if(old?.photoKey)await deletePhoto(old.photoKey)}
+const p={id,name:document.getElementById('pName').value.trim(),age,location:document.getElementById('pLocation').value.trim(),role:document.getElementById('pRole').value.trim(),bio:document.getElementById('pBio').value.trim(),tags:document.getElementById('pTags').value.split(',').map(x=>x.trim()).filter(Boolean),photoKey,imageUrl:document.getElementById('pImageUrl').value.trim()};
+if(old)profiles=profiles.map(x=>x.id===id?p:x);else profiles.push(p);saveMeta();await renderProfiles();renderManage();resetForm();alert('Profile saved successfully.');}catch(err){alert('Could not save this image: '+err.message)}});
+function showPhoto(src){document.getElementById('modalImg').src=src;document.getElementById('photoModal').style.display='flex'}function closePhoto(){document.getElementById('photoModal').style.display='none'}
+function enterSite(){document.getElementById('agegate').style.display='none';try{sessionStorage.setItem('sapphire_age_confirmed','1')}catch(e){}}function leaveSite(){document.body.innerHTML='<div style="padding:60px;text-align:center;color:white">You must be 18 or older to enter.</div>'}
+try{if(sessionStorage.getItem('sapphire_age_confirmed')==='1')document.getElementById('agegate').style.display='none'}catch(e){}
+document.getElementById('year').textContent=new Date().getFullYear();load();renderProfiles();renderManage();
+</script></body></html>
